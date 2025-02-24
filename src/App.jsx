@@ -1,22 +1,45 @@
 import React, { useState } from "react";
+import {ToastContainer, toast} from 'react-toastify';
 
 const App = () => {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState(
-    "Please fill all options mentioned above!!"
-  );
+  const [error, setError] = useState("");
 
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log("Form Submitted");
 
+    if(password.length<8){
+      setError('Password must be 8 characters long');
+      return
+    } 
+    if(password !== confirmPassword){
+      setError('Password and confirm password must be same');
+      return
+    }
+    if(!/[!@#$%^&*()<>.,]/.test(password)){
+      setError("Password must contains any special characters.");
+      return
+    }
+
+    setError("");
     setFullName("");
     setEmail("");
     setPassword("");
     setConfirmPassword("");
+    toast.success('🦄 Login Successful!', {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      });
+    console.log("Form Submitted");
   };
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4">
@@ -39,6 +62,7 @@ const App = () => {
             className="border border-gray-300 px-4 py-2 text-lg rounded-md focus:ring-2 focus:ring-emerald-500 outline-none"
             type="text"
             placeholder="Enter Name"
+            required
             value={fullName}
             onChange={(e) => {
               setFullName(e.target.value);
@@ -48,6 +72,7 @@ const App = () => {
             className="border border-gray-300 px-4 py-2 text-lg rounded-md focus:ring-2 focus:ring-emerald-500 outline-none"
             type="email"
             placeholder="Enter Email"
+            required
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
@@ -57,6 +82,7 @@ const App = () => {
             className="border border-gray-300 px-4 py-2 text-lg rounded-md focus:ring-2 focus:ring-emerald-500 outline-none"
             type="password"
             placeholder="Enter Password"
+            required
             value={password}
             onChange={(e) => {
               setPassword(e.target.value);
@@ -66,6 +92,7 @@ const App = () => {
             className="border border-gray-300 px-4 py-2 text-lg rounded-md focus:ring-2 focus:ring-emerald-500 outline-none"
             type="password"
             placeholder="Confirm Password"
+            required
             value={confirmPassword}
             onChange={(e) => {
               setConfirmPassword(e.target.value);
@@ -86,6 +113,7 @@ const App = () => {
             Sign in
           </a>
         </p>
+        <ToastContainer></ToastContainer>
       </div>
     </div>
   );
