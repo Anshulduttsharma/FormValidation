@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import {ToastContainer, toast} from 'react-toastify';
+import User from './components/user';
 
 const App = () => {
+  const [user, setUser] = useState([]);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,6 +25,12 @@ const App = () => {
       setError("Password must contains any special characters.");
       return
     }
+    if(!/[A-Z]/.test(password)){
+      setError("Password must contain any Capital letter")
+      return
+    }
+
+    setUser([...user, {fullName, email, password}]);
 
     setError("");
     setFullName("");
@@ -115,6 +123,9 @@ const App = () => {
         </p>
         <ToastContainer></ToastContainer>
       </div>
+      {user.map(function(val,id){
+        return <User val={val} id={id}/>
+      })}
     </div>
   );
 };
